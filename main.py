@@ -12,7 +12,7 @@ class App(ctk.CTk):
         container.grid_columnconfigure(0, weight=1)
         container.grid_columnconfigure(1, weight=6)
         ctk.set_appearance_mode("dark")
-        print("Coucou")
+
         nav = ctk.CTkFrame(container, fg_color="red")
         nav.grid(row=0, column=0, sticky="nsew")
 
