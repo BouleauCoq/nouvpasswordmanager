@@ -16,7 +16,7 @@ class App(ctk.CTk):
         container.grid_columnconfigure(1, weight=6)
         ctk.set_appearance_mode("dark")
 
-        nav = ctk.CTkFrame(container, fg_color="red")
+        nav = ctk.CTkFrame(container, fg_color="gray")
         nav.grid(row=0, column=0, sticky="nsew")
 
         label = ctk.CTkLabel(nav, text="NavigationPage")
@@ -64,36 +64,25 @@ class CreatePasswordsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
 
         ctk.CTkFrame.__init__(self, parent)
-        self.configure(fg_color="blue")
         self.name = "CreatePasswordPage"
         self.controller = controller
         self.label = ctk.CTkLabel(self, text="CreatePasswordsPage")
         self.label.pack(side="top", fill="x")
         self.btn_generate = ctk.CTkButton(
-            self, text="Generate a password", command=self.Click_event_Dialog
+            self, text="Générer un mot de passe", command=self.Click_event_Dialog, fg_color="gray15"
         )
-        self.btn_generate.pack(side="top", fill="x")
-        self.labelMotDePasse = ctk.CTkLabel(self, text="", fg_color="black")
-        self.labelMotDePasse.pack(side="top", fill="x", pady=250)
+        self.btn_generate.pack(side="top", pady=125)
+        self.labelMotDePasse = ctk.CTkLabel(self, text="", fg_color="black", width=500)
+        self.labelMotDePasse.pack(side="top", pady=0)
         self.btn_copy = ctk.CTkButton(
-            self, text="Copier le mot de passe", command=pyperclip.copy(''.join([str(i) for i in Mdp]))
+            self, text="Copier le mot de passe", command=pyperclip.copy(''.join([str(i) for i in Mdp])), fg_color="gray15"
         )
-        self.btn_copy.pack(side="bottom", fill="x", pady=10)
-        self.btn_paste = ctk.CTkButton(
-            self, text="Paste", command=self.Click_event_Paste
-        )
-        self.btn_paste.pack(side="bottom", fill="x")
-        self.label_paste = ctk.CTkLabel(self, text="", fg_color="red")
-        self.label_paste.pack(side="bottom", fill="x")
+        self.btn_copy.pack(side="top", pady=15)
         
     def Click_event_Dialog(self):
         dialog = ctk.CTkInputDialog(text="Longueur du mot de passe", title="Password")
         MdpLongueur = int(dialog.get_input()) 
         self.labelMotDePasse.configure(text=mdp(MdpLongueur))
-        
-    
-    def Click_event_Paste(self):
-        self.label_paste.configure(text=pyperclip.paste())
 
 
 
@@ -104,16 +93,17 @@ class VerifyerPage(ctk.CTkFrame):
         self.controller = controller
         label = ctk.CTkLabel(self, text="VerifyerPage")
         label.pack(side="top", fill="x")
-        self.entry_verif = ctk.CTkEntry(self, placeholder_text="Mot de passe à tester", fg_color="black")
-        self.entry_verif.pack(side="bottom", fill="x")
+        self.entry_verif = ctk.CTkEntry(self, placeholder_text="Mot de passe à tester", fg_color="black", width=500)
+        self.entry_verif.pack(side="top", pady=150)
         self.btn_verif = ctk.CTkButton(
-            self, text="Vérifier", command=self.Click_event_Verif
+            self, text="Vérifier", command=self.Click_event_Verif, width=500, fg_color="gray15"
         )
-        self.btn_verif.pack(side="top", fill="x")
-        self.progressbar_verif = ctk.CTkProgressBar(self, progress_color="red")
-        self.progressbar_verif.pack(side="top", fill="x", pady=15)
+        self.btn_verif.pack(side="top")
+        self.progressbar_verif = ctk.CTkProgressBar(self, progress_color="red", width=500)
+        self.progressbar_verif.pack(side="top", pady=15)
         self.progressbar_verif.set(value=0)
-
+        self.label_verif = ctk.CTkLabel(self, text="", width=500)
+        self.label_verif.pack(side="top", pady=15)
 
     def Click_event_Verif(self):
         verifmdp = self.entry_verif.get()
@@ -127,7 +117,6 @@ class VerifyerPage(ctk.CTkFrame):
 class PasswordsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
-        self.configure(fg_color="green")
         self.name = "PasswordsPage"
         self.controller = controller
         label = ctk.CTkLabel(self, text="PasswordsPage")
@@ -225,12 +214,16 @@ def verif(verifmdp):
 def color(self, s):
     if s<=0.25:
         self.progressbar_verif.configure(progress_color="red")
+        self.label_verif.configure(text="L'utilisation du mot de passe est déconseillée.")
     if s>0.25 and s<=0.5:
         self.progressbar_verif.configure(progress_color="orange")
+        self.label_verif.configure(text="Le mot de passe est peu solide.")
     if s>0.5 and s<=0.75:
         self.progressbar_verif.configure(progress_color="yellow")
+        self.label_verif.configure(text="Le mot de passe est de solidité moyenne.")
     if s>0.75:
         self.progressbar_verif.configure(progress_color="green")
+        self.label_verif.configure(text="Le mot de passe est solide.")
 
 app = App()
 app.mainloop()
