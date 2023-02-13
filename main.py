@@ -1,4 +1,3 @@
-import tkinter as tk
 import customtkinter as ctk
 from random import *
 import pyperclip  
@@ -71,13 +70,13 @@ class CreatePasswordsPage(ctk.CTkFrame):
         self.btn_generate = ctk.CTkButton(
             self, text="Générer un mot de passe", command=self.Click_event_Dialog, fg_color="gray15"
         )
-        self.btn_generate.pack(side="top", pady=125)
+        self.btn_generate.place(anchor=ctk.N, relx=0.33, rely=0.5)
         self.labelMotDePasse = ctk.CTkLabel(self, text="", fg_color="black", width=500)
-        self.labelMotDePasse.pack(side="top", pady=0)
+        self.labelMotDePasse.place(anchor=ctk.N, relx=0.5, rely=0.45)
         self.btn_copy = ctk.CTkButton(
             self, text="Copier le mot de passe", command=pyperclip.copy(''.join([str(i) for i in Mdp])), fg_color="gray15"
         )
-        self.btn_copy.pack(side="top", pady=15)
+        self.btn_copy.place(anchor=ctk.N, relx=0.675, rely=0.5)
         
     def Click_event_Dialog(self):
         dialog = ctk.CTkInputDialog(text="Longueur du mot de passe", title="Password")
@@ -94,16 +93,20 @@ class VerifyerPage(ctk.CTkFrame):
         label = ctk.CTkLabel(self, text="VerifyerPage")
         label.pack(side="top", fill="x")
         self.entry_verif = ctk.CTkEntry(self, placeholder_text="Mot de passe à tester", fg_color="black", width=500)
-        self.entry_verif.pack(side="top", pady=150)
+        self.entry_verif.place(anchor=ctk.N, relx=0.5, rely=0.4)
         self.btn_verif = ctk.CTkButton(
             self, text="Vérifier", command=self.Click_event_Verif, width=500, fg_color="gray15"
         )
-        self.btn_verif.pack(side="top")
-        self.progressbar_verif = ctk.CTkProgressBar(self, progress_color="red", width=500)
-        self.progressbar_verif.pack(side="top", pady=15)
+        self.btn_verif.place(anchor=ctk.N, relx=0.5, rely=0.5)
+        self.progressbar_verif = ctk.CTkProgressBar(self, progress_color="red", width=500, height=23)
+        self.progressbar_verif.place(anchor=ctk.N, relx=0.5, rely=0.45)
         self.progressbar_verif.set(value=0)
         self.label_verif = ctk.CTkLabel(self, text="", width=500)
-        self.label_verif.pack(side="top", pady=15)
+        self.label_verif.place(anchor=ctk.N, relx=0.5, rely=0.6)
+        self.btn_paste = ctk.CTkButton(
+            self, text="Coller", command=self.Click_event_Paste, fg_color="gray15"
+        )
+        self.btn_paste.place(anchor=ctk.N, relx=0.1, rely=0.1)
 
     def Click_event_Verif(self):
         verifmdp = self.entry_verif.get()
@@ -111,7 +114,10 @@ class VerifyerPage(ctk.CTkFrame):
         self.progressbar_verif.set(value=s)
         color(self, s)
 
-
+    def Click_event_Paste(self):
+        s=verif(pyperclip.paste())
+        self.progressbar_verif.set(value=s)
+        color(self, s)
 
 
 class PasswordsPage(ctk.CTkFrame):
@@ -121,6 +127,8 @@ class PasswordsPage(ctk.CTkFrame):
         self.controller = controller
         label = ctk.CTkLabel(self, text="PasswordsPage")
         label.pack(side="top", fill="x")
+
+        
 
 
 
