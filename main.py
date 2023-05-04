@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from random import *
-import pyperclip  
+import pyperclip
 
 
 
