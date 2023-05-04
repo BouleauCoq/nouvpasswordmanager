@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from random import *
 import pyperclip
-
+import csv
 
 
 class App(ctk.CTk):
@@ -127,8 +127,15 @@ class PasswordsPage(ctk.CTkFrame):
         self.controller = controller
         label = ctk.CTkLabel(self, text="PasswordsPage")
         label.pack(side="top", fill="x")
-
+        self.btn_tableau=ctk.CTkButton(self,text="Tableau", command=self.tableau, width=500, fg_color="gray15")
+        self.btn_tableau.place(anchor=ctk.N, relx=0.5, rely=0.5)
         
+
+    def tableau(self):
+        self.textbox=ctk.CTkTextbox(self)
+        self.textbox.insert("0.0", text="test")
+        self.textbox.pack(side="top", fill="x")
+
 
 
 
@@ -142,7 +149,7 @@ class Details(ctk.CTkFrame):
         label.pack(side="top", fill="x")
 
 
-
+#génération du mdp
 a=0
 x=0
 Mdp=[]
@@ -158,7 +165,7 @@ def mdp(MdpLongueur):
         return Mdp
 
 
-
+#vérification du mdp
 def verif(verifmdp):
     s=0
     nb=0
@@ -218,7 +225,7 @@ def verif(verifmdp):
     return s
 
 
-
+#association avec les couleurs
 def color(self, s):
     if s<=0.25:
         self.progressbar_verif.configure(progress_color="red")
@@ -232,6 +239,14 @@ def color(self, s):
     if s>0.75:
         self.progressbar_verif.configure(progress_color="green")
         self.label_verif.configure(text="Le mot de passe est solide.")
+
+
+#génération du tableau
+
+
+
+
+
 
 app = App()
 app.mainloop()
