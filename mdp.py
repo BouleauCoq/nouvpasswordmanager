@@ -17,7 +17,7 @@ def mdp(n):
 f = open("données.csv","w", newline="")
 writer = csv.writer(f)
 data = [1,"un", "deux", "trois", "quatre"]
-data2 = [2,"cinq","six","sept","huit"]
+data2 = [1,"cinq","six","sept","huit"]
 writer.writerow(data)
 writer.writerow(data2)
 f.close()

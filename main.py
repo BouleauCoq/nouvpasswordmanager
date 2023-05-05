@@ -127,14 +127,46 @@ class PasswordsPage(ctk.CTkFrame):
         self.controller = controller
         label = ctk.CTkLabel(self, text="PasswordsPage")
         label.pack(side="top", fill="x")
-        self.btn_tableau=ctk.CTkButton(self,text="Tableau", command=self.tableau, width=500, fg_color="gray15")
-        self.btn_tableau.place(anchor=ctk.N, relx=0.5, rely=0.5)
+        self.btn_tableau = ctk.CTkButton(self,text="Tableau", command=self.tableau, width=350, fg_color="gray15")
+        self.btn_tableau.place(anchor=ctk.N, relx=0.75, rely=0.16)
+        self.identifiant = ctk.CTkEntry(self, placeholder_text="Numéro d'identifiant", fg_color="black", width=350)
+        self.identifiant.place(anchor=ctk.N, relx=0.75, rely=0.2)
+        self.label_ajout = ctk.CTkLabel(self, text="Ajout de données", font=("Calibri",25,"bold"))
+        self.label_ajout.place(anchor=ctk.N, relx=0.5, rely=0.5)
+        self.entry_numero = ctk.CTkEntry(self, placeholder_text="Numéro d'identifiant", fg_color="black", width=250)
+        self.entry_numero.place(anchor=ctk.N, relx=0.15, rely=0.65)
+        self.entry_id = ctk.CTkEntry(self, placeholder_text="Identifiant", fg_color="black", width=250)
+        self.entry_id.place(anchor=ctk.N, relx=0.15, rely=0.7)
+        self.entry_mdp = ctk.CTkEntry(self, placeholder_text="Mot de passe", fg_color="black", width=250)
+        self.entry_mdp.place(anchor=ctk.N, relx=0.15, rely=0.75)
+        self.entry_site = ctk.CTkEntry(self, placeholder_text="Site", fg_color="black", width=250)
+        self.entry_site.place(anchor=ctk.N, relx=0.15, rely=0.8)
+        self.btn_données = ctk.CTkButton(self, text="Valider", command=self.ajout, width=350, fg_color="gray15")
+        self.btn_données.place(anchor=ctk.N, relx=0.6, rely=0.73)
+        
+
         
 
     def tableau(self):
-        self.textbox=ctk.CTkTextbox(self)
-        self.textbox.insert("0.0", text="test")
-        self.textbox.pack(side="top", fill="x")
+        identifiant_entry=self.identifiant.get()
+        identifiant(identifiant_entry)
+        self.textbox = ctk.CTkTextbox(self, width=500, state="normal")
+        self.textbox.place(anchor=ctk.N, relx=0.3, rely=0.1)
+        self.textbox.delete("0.0", "end")
+        self.textbox.insert("0.0", text='\n'.join(map(str, Liste_identifiant)))
+        self.textbox.configure(state="disabled")
+
+    def ajout(self):
+        donnée_numéro = self.entry_numero.get()
+        donnée_id = self.entry_id.get()
+        donnée_mdp = self.entry_mdp.get()
+        donnée_site = self.entry_site.get()
+        f = open("données.csv","a", newline="")
+        writer = csv.writer(f)
+        data = [(donnée_numéro, donnée_id, donnée_mdp, donnée_site)]
+        writer.writerows(data)
+        f.close()
+
 
 
 
@@ -241,7 +273,24 @@ def color(self, s):
         self.label_verif.configure(text="Le mot de passe est solide.")
 
 
+
+with open('données.csv', 'r') as csv_file:
+    csv_reader = csv.reader(csv_file)
+
+    list_of_rows = list(csv_reader)
+    print(list_of_rows)
+
+
 #génération du tableau
+Liste_identifiant=[]
+def identifiant(identifiant_entry):
+    Liste_identifiant.clear()
+    for l in range(len(list_of_rows)):
+        if identifiant_entry==list_of_rows[l][0]:
+            Liste_identifiant.append(list_of_rows[l])
+            l=l+1
+        else:
+            l=l+1
 
 
 
