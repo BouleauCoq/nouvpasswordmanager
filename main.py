@@ -32,7 +32,7 @@ class App(ctk.CTk):
         btn_Pwds.pack(side="top", pady=10)
         btn_Details.pack(side="bottom", pady=10)
         self.frames = {}
-        for F in (CreatePasswordsPage, VerifyerPage, PasswordsPage, Details):
+        for F in (CreatePasswordsPage, VerifyerPage, PasswordsPage, Details, PresentationPage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             # OR F.__name__ pour que _name_ ne dépende pas d'une instance
@@ -40,7 +40,7 @@ class App(ctk.CTk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=1, sticky="nsew")
 
-        self.showFrame(self.frames["VerifyerPage"])
+        self.showFrame(self.frames["PresentationPage"])
 
     def showFrame(self, frame):
         frame.tkraise()
@@ -59,13 +59,26 @@ class App(ctk.CTk):
 
 
 
+class PresentationPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.name = "PresentationPage"
+        self.controller = controller
+        self.label = ctk.CTkLabel(self, text="PresentationPage")
+        self.label.pack(side="top", fill="x")
+        self.presentation_label = ctk.CTkLabel(self, text="Génération, Vérification et Stockage de Mots de passe", font=("Calibri",35,"bold"))
+        self.presentation_label.place(anchor=ctk.N, relx=0.5, rely=0.5)
+        self.noms_label = ctk.CTkLabel(self, text="Par Paul Génin et Thomas Dolnet", font=("Calibri", 20, "bold"))
+        self.noms_label.place(anchor=ctk.N, relx=0.8, rely=0.9)
+
+
 class CreatePasswordsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
 
         ctk.CTkFrame.__init__(self, parent)
         self.name = "CreatePasswordPage"
         self.controller = controller
-        self.label = ctk.CTkLabel(self, text="CreatePasswordsPage")
+        self.label = ctk.CTkLabel(self, text="Page de création", font=("Arial", 25))
         self.label.pack(side="top", fill="x")
         self.btn_generate = ctk.CTkButton(
             self, text="Générer un mot de passe", command=self.Click_event_Dialog, fg_color="gray15"
@@ -77,6 +90,8 @@ class CreatePasswordsPage(ctk.CTkFrame):
             self, text="Copier le mot de passe", command=pyperclip.copy(''.join([str(i) for i in Mdp])), fg_color="gray15"
         )
         self.btn_copy.place(anchor=ctk.N, relx=0.675, rely=0.5)
+        self.textgene = ctk.CTkLabel(self, text="Génération de mots de passe", font=("Calibri", 20, "bold"))
+        self.textgene.place(anchor=ctk.N, relx=0.5, rely=0.41)
         
     def Click_event_Dialog(self):
         dialog = ctk.CTkInputDialog(text="Longueur du mot de passe", title="Password")
@@ -90,7 +105,7 @@ class VerifyerPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.name = "VerifyerPage"
         self.controller = controller
-        label = ctk.CTkLabel(self, text="VerifyerPage")
+        label = ctk.CTkLabel(self, text="Page de vérification", font=("Arial", 25))
         label.pack(side="top", fill="x")
         self.entry_verif = ctk.CTkEntry(self, placeholder_text="Mot de passe à tester", fg_color="black", width=500)
         self.entry_verif.place(anchor=ctk.N, relx=0.5, rely=0.4)
@@ -107,6 +122,8 @@ class VerifyerPage(ctk.CTkFrame):
             self, text="Coller", command=self.Click_event_Paste, fg_color="gray15"
         )
         self.btn_paste.place(anchor=ctk.N, relx=0.1, rely=0.1)
+        self.textverif_label = ctk.CTkLabel(self, text="Entrez le mot de passe à tester", font=("Calibri", 15, "bold"))
+        self.textverif_label.place(anchor=ctk.N, relx=0.5, rely=0.36)
 
     def Click_event_Verif(self):
         verifmdp = self.entry_verif.get()
@@ -125,7 +142,7 @@ class PasswordsPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.name = "PasswordsPage"
         self.controller = controller
-        label = ctk.CTkLabel(self, text="PasswordsPage")
+        label = ctk.CTkLabel(self, text="Page des Mots de passe", font=("Arial", 25))
         label.pack(side="top", fill="x")
         self.btn_tableau = ctk.CTkButton(self,text="Tableau", command=self.tableau, width=350, fg_color="gray15")
         self.btn_tableau.place(anchor=ctk.N, relx=0.75, rely=0.16)
@@ -143,6 +160,8 @@ class PasswordsPage(ctk.CTkFrame):
         self.entry_site.place(anchor=ctk.N, relx=0.15, rely=0.8)
         self.btn_données = ctk.CTkButton(self, text="Valider", command=self.ajout, width=350, fg_color="gray15")
         self.btn_données.place(anchor=ctk.N, relx=0.6, rely=0.73)
+        self.textdonnées_label = ctk.CTkLabel(self, text="Données enregistrées", font=("Calibri", 25, "bold" ))
+        self.textdonnées_label.place(anchor=ctk.N, relx=0.5, rely=0.06)
         
 
         
@@ -150,7 +169,7 @@ class PasswordsPage(ctk.CTkFrame):
     def tableau(self):
         identifiant_entry=self.identifiant.get()
         identifiant(identifiant_entry)
-        self.textbox = ctk.CTkTextbox(self, width=500, state="normal")
+        self.textbox = ctk.CTkTextbox(self, width=500, state="normal", font=("Calibri", 18))
         self.textbox.place(anchor=ctk.N, relx=0.3, rely=0.1)
         self.textbox.delete("0.0", "end")
         self.textbox.insert("0.0", text='\n'.join(map(str, Liste_identifiant)))
@@ -179,12 +198,15 @@ class Details(ctk.CTkFrame):
         self.controller = controller
         label = ctk.CTkLabel(self, text="Détails")
         label.pack(side="top", fill="x")
-
+        self.textboxcarac = ctk.CTkTextbox(self, state="normal", font=("Calibri", 18))
+        self.textboxcarac.pack(side="top", fill="x")
+        self.textboxcarac.insert("0.0", text="Système de notation des mots de passe fondé sur des caractéristiques fixées.\n Mots de passe générés aléatoirement.\n Mots de passe sauvegardé de manière sécurisée hors ligne.\n")
+        self.textboxcarac.configure(state="disabled")
 
 #génération du mdp
-a=0
-x=0
-Mdp=[]
+a=0 #valeur ASCII du caractère
+x=0 
+Mdp=[] #Liste des caractères
 def mdp(MdpLongueur):
     if MdpLongueur<8:
         return "Il est conseillé de choisir un mot de passe d'une longueur plus élevée que 7."
@@ -199,14 +221,14 @@ def mdp(MdpLongueur):
 
 #vérification du mdp
 def verif(verifmdp):
-    s=0
-    nb=0
+    s=0 #score
+    nb=0 
     maj=0
     min=0
     spe=0
     rep=0
-    MM=0
-    NB=0
+    MM=0 #répétitions de maj et min
+    NB=0 #répétitions de chiffres
     ch = list(verifmdp)
     CH=[]
     consecnb=0
@@ -234,7 +256,7 @@ def verif(verifmdp):
         if spe==0 and nb==0:
             MM=maj+min-2*(maj+min)
         if spe==0 and maj==0 and min==0:
-            NB=nb-3*nb
+            NB=nb-3*nb 
     for z in range(len(CH)-1):
         if CH[z]>=48 and CH[z]<=57 and CH[z+1]>=48 and CH[z+1]<=57:
             consecnb=consecnb+1
@@ -246,7 +268,7 @@ def verif(verifmdp):
             consecspe=consecspe+1
         else:
             s=s
-    s=((s+(nb*2)+maj+min+(spe*4)+MM+NB-(rep**2+consecmaj*2+consecmin*2+consecnb*2+consecspe*2))*100)/8000
+    s=((s+(nb*2)+maj+min+(spe*4)+MM+NB-(rep**2+consecmaj*2+consecmin*2+consecnb*2+consecspe*2))*100)/5000
     if s>=1:
         s=1
     else:
@@ -273,7 +295,7 @@ def color(self, s):
         self.label_verif.configure(text="Le mot de passe est solide.")
 
 
-
+#affichage du csv dans le terminal
 with open('données.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
 
@@ -291,8 +313,6 @@ def identifiant(identifiant_entry):
             l=l+1
         else:
             l=l+1
-
-
 
 
 

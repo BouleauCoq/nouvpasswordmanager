@@ -11,12 +11,6 @@ class Table:
 				self.entry.grid(row=i, column=j)
 				self.entry.insert(ctk.END, list_of_rows[i][j])
 
-f = open("données.csv","w", newline="")
-writer = csv.writer(f)
-data = [("un", "deux", "trois", "quatre"),
-		("cinq","six","sept","huit")]
-writer.writerows(data)
-f.close()
 
 with open('données.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
@@ -24,8 +18,6 @@ with open('données.csv', 'r') as csv_file:
     list_of_rows = list(csv_reader)
     print(list_of_rows)
 
-liste = [(1,"A","B"),
-        (2,"C","D")]
 
 lignestotales = len(list_of_rows)
 colonnestotales = len(list_of_rows[0])
